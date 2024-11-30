@@ -1,6 +1,6 @@
 # gitlab-ci-android
 
-https://hub.docker.com/r/inovex/gitlab-ci-android/
+https://hub.docker.com/r/toasterofbread/gitlab-ci-android/
 
 Contains the Android SDK, NDK and common packages necessary for building Android Apps in Gitlab CI (for example).
 Make sure caching is enabled for the CI environment to speed up builds.
@@ -8,7 +8,7 @@ Make sure caching is enabled for the CI environment to speed up builds.
 Example yml which has dependency caching enabled:
 
 ```
-image: inovex/gitlab-ci-android
+image: toasterofbread/gitlab-ci-android
 
 stages:
 - release
@@ -21,7 +21,7 @@ before_script:
 - chmod +x ./gradlew
 
 cache:
-  key: ${CI_PROJECT_ID}
+  key: ${CI_PROJECT_ID}s
   paths:
   - .gradle/
 
@@ -43,7 +43,7 @@ The Docker image supports JDK 8 11, 17 and 21.
 To use the correct version within your builds, it is recommended to define `JAVA_HOME` accordingly.
 
 ```
-before_script: 
+before_script:
   - export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
   or
   - export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64

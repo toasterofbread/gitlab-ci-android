@@ -9,7 +9,7 @@
 #
 
 FROM ubuntu:20.04
-LABEL maintainer inovex GmbH
+LABEL maintainer toasterofbread
 
 ENV NDK_VERSION r25c
 
@@ -17,14 +17,15 @@ ENV ANDROID_SDK_ROOT "/sdk"
 ENV ANDROID_NDK_HOME "/ndk"
 ENV PATH "$PATH:${ANDROID_SDK_ROOT}/bin"
 
-ENV DEBIAN_FRONTEND=noninteractive 
+ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get -qq update && apt-get install -y locales \
 	&& localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
 ENV LANG en_US.UTF-8
 
-# install necessary packages
-RUN apt-get update && apt-get install -qqy --no-install-recommends \
+# Install necessary packages
+RUN apt-get update \
+  && apt-get install -qqy --no-install-recommends \
     apt-utils \
     openjdk-8-jdk \
     openjdk-11-jdk \
@@ -35,11 +36,18 @@ RUN apt-get update && apt-get install -qqy --no-install-recommends \
     curl \
     cmake \
     lldb \
-    git \
+    software-properties-common \
     python-is-python3 \
     ninja-build \
-    build-essential \
-  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+    build-essential
+
+# Install latest Git
+RUN add-apt-repository ppa:git-core/ppa \
+  && apt-get update \
+  && apt-get install -y git
+
+# Remove unneeded files
+RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # pre-configure some ssl certs
 RUN rm -f /etc/ssl/certs/java/cacerts; \
